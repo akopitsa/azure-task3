@@ -51,11 +51,12 @@ param(
     $parametersFilePath = "parameters2.json",
 
     [string]
-    $storageAccountName = "asatwo"
+    $storageAccountName = "asafour"
    )
 
    $deploymentParameter = @{
     "storageAccounts_mycdpstorageaccount_name" = $storageAccountName + ((Get-AzureRmContext).Subscription.Id).Replace('-','').substring(0, 14);
+    "location_infrastructure" = $resourceGroupLocation;
 }
 <#
 .SYNOPSIS

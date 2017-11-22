@@ -7,6 +7,12 @@
             "metadata": {
                 "description" : "account"
             }
+        },
+        "location_infrastructure" : {
+            "type": "string",
+            "metadata": {
+                "description": "location"
+            }
         }
     },
     "variables": {},
@@ -21,7 +27,7 @@
             "kind": "Storage",
             "name": "[parameters('storageAccounts_mycdpstorageaccount_name')]",
             "apiVersion": "2017-06-01",
-            "location": "westeurope",
+            "location": "[parameters('location_infrastructure')]",
             "tags": {},
             "scale": null,
             "properties": {
@@ -45,6 +51,36 @@
                 "supportsHttpsTrafficOnly": false
             },
             "dependsOn": []
+        },
+        {
+            "apiVersion": "2015-06-15",
+            "type": "Microsoft.Network/virtualNetworks",
+            "name": "VirtualNetworkVPC",
+            "location": "[parameters('location_infrastructure')]",
+            "tags": {
+                "displayName": "VirtualNetworkVPC"
+            },
+            "properties": {
+                "addressSpace": {
+                    "addressPrefixes": [
+                        "10.0.0.0/16"
+                    ]
+                },
+                "subnets": [
+                    {
+                        "name": "Subnet-1",
+                        "properties": {
+                            "addressPrefix": "10.0.0.0/24"
+                        }
+                    },
+                    {
+                        "name": "Subnet-2",
+                        "properties": {
+                            "addressPrefix": "10.0.1.0/24"
+                        }
+                    }
+                ]
+            }
         }
     ]
 }
