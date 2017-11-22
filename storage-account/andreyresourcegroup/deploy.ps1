@@ -35,14 +35,14 @@ param(
    
     #[Parameter(Mandatory=$True)]
     [string]
-    $resourceGroupName = "automyresourcegroupone",
+    $resourceGroupName = "automyresourcegroup",
    
     [string]
     $resourceGroupLocation = "westeurope",
    
     #[Parameter(Mandatory=$True)]
     [string]
-    $deploymentName = "automydeploymentnametwo",
+    $deploymentName = "automydeploymentname",
    
     [string]
     $templateFilePath = "template.json",
@@ -51,11 +51,11 @@ param(
     $parametersFilePath = "parameters2.json",
 
     [string]
-    $storageAccountName = "asafour"
+    $storageAccountName = "mystorageacc"
    )
 
    $deploymentParameter = @{
-    "storageAccounts_mycdpstorageaccount_name" = $storageAccountName + ((Get-AzureRmContext).Subscription.Id).Replace('-','').substring(0, 14);
+    "storageAccounts_mycdpstorageaccount_name" = $storageAccountName + ((Get-AzureRmContext).Subscription.Id).Replace('-','').substring(0, 11);
     "location_infrastructure" = $resourceGroupLocation;
 }
 <#
