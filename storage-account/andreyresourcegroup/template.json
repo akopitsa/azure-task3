@@ -15,7 +15,9 @@
             }
         }
     },
-    "variables": {},
+    "variables": {
+        "virtualNetworkName": "VirtualNetworkVPC"
+    },
     "resources": [
         {
             "comments": "Generalized from resource: '/subscriptions/3c1acdbb-6c4a-4709-b589-1e6fe59ccd99/resourceGroups/andreyresourcegroup/providers/Microsoft.Storage/storageAccounts/mycdpstorageaccount'.",
@@ -55,10 +57,10 @@
         {
             "apiVersion": "2015-06-15",
             "type": "Microsoft.Network/virtualNetworks",
-            "name": "VirtualNetworkVPC",
+            "name": "[variables('virtualNetworkName')]",
             "location": "[parameters('location_infrastructure')]",
             "tags": {
-                "displayName": "VirtualNetworkVPC"
+                "displayName": "[variables('virtualNetworkName')]"
             },
             "properties": {
                 "addressSpace": {
@@ -81,6 +83,18 @@
                     }
                 ]
             }
+        },
+        {
+            "apiVersion": "2017-06-01",
+            "type": "Microsoft.Network/networkSecurityGroups",
+            "name": "networkSecurityGroupName",
+            "location": "[resourceGroup().location]",
+            "properties": {
+                "securityRules": []
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/virtualNetworks/', variables('virtualNetworkName'))]"
+            ]
         }
     ]
 }
