@@ -92,16 +92,29 @@
             "properties": {
                 "securityRules": [
                     {
-                        "name": "all-from-epam",
+                        "name": "all-from-epam-one",
                         "properties": {
                             "description": "all-from-epam",
                             "protocol": "*",
                             "sourcePortRange": "0-65535",
                             "destinationPortRange": "0-65535",
-                            "sourceAddressPrefix": "89.162.0.0/16",
+                            "sourceAddressPrefix": "89.162.139.0/27",
                             "destinationAddressPrefix": "*",
                             "access": "Allow",
                             "priority": 101,
+                            "direction": "Inbound"
+                        }
+                    },                    {
+                        "name": "all-from-epam-two",
+                        "properties": {
+                            "description": "all-from-epam",
+                            "protocol": "*",
+                            "sourcePortRange": "0-65535",
+                            "destinationPortRange": "0-65535",
+                            "sourceAddressPrefix": "80.92.226.133/32",
+                            "destinationAddressPrefix": "*",
+                            "access": "Allow",
+                            "priority": 102,
                             "direction": "Inbound"
                         }
                     }
