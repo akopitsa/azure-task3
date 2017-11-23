@@ -35,7 +35,7 @@ param(
    
     #[Parameter(Mandatory=$True)]
     [string]
-    $resourceGroupName = "automyresourcegroup",
+    $resourceGroupName = "automyresourcegroupyes",
    
     [string]
     $resourceGroupLocation = "westeurope",
@@ -51,12 +51,28 @@ param(
     $parametersFilePath = "parameters2.json",
 
     [string]
-    $storageAccountName = "mystorageacc"
+    $storageAccountName = "mystorageacc",
+
+    [string]
+    $virtualnetworkname = "VnetVPC",
+
+    [string]
+    $subnetzero = "10.0.0.0/24",
+
+    [string]
+    $subnetone = "10.0.1.0/24",
+
+    [string]
+    $vmname = "ubuntu-vps"
    )
 
    $deploymentParameter = @{
     "storageAccounts_mycdpstorageaccount_name" = $storageAccountName + ((Get-AzureRmContext).Subscription.Id).Replace('-','').substring(0, 11);
     "location_infrastructure" = $resourceGroupLocation;
+    "subnetzero" = $subnetzero;
+    "subnetone" = $subnetone;
+    "virtualnetworkname" = $virtualnetworkname;
+    "vmname" = $vmname;
 }
 <#
 .SYNOPSIS
