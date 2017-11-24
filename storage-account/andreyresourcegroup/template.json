@@ -43,10 +43,36 @@
             "metadata": {
                 "description" : "User login"
             }
+        },
+        "pwd" : {
+            "type": "string",
+            "metadata": {
+                "description" : "User Password"
+            }
+        },
+        "vpc" : {
+            "type": "string",
+            "metadata": {
+                "description" : "VPC range"
+            }
+        },
+        "sqlsrv" : {
+            "type": "string",
+            "metadata": {
+                "description" : "SQL server"
+            }
+        },
+        "manualsqldbAdminLogin": {
+            "type": "string",
+            "minLength": 1
+          },
+        "manualsqldbAdminLoginPassword": {
+            "type": "securestring"
         }
     },
     "variables": {
-        "virtualNetworkName": "[parameters('virtualnetworkname')]"
+        "virtualNetworkName": "[parameters('virtualnetworkname')]",
+        "manualsqldbName": "[concat(parameters('sqlsrv'), uniqueString(resourceGroup().id))]"   
     },
     "resources": [
         {
@@ -95,7 +121,7 @@
             "properties": {
                 "addressSpace": {
                     "addressPrefixes": [
-                        "10.0.0.0/16"
+                        "[parameters('vpc')]"
                     ]
                 },
                 "subnets": [
@@ -217,7 +243,7 @@
                 "osProfile": {
                     "computerName": "[parameters('vmname')]",
                     "adminUsername": "[parameters('login')]",
-                    "adminPassword": "!Epam2017#Z"
+                    "adminPassword": "[parameters('pwd')]"
                 },
                 "storageProfile": {
                     "imageReference": {
@@ -240,7 +266,36 @@
                     ]
                 }
             }
-        }
+        },
+        {
+            "name": "[variables('manualsqldbName')]",
+            "type": "Microsoft.Sql/servers",
+            "location": "[resourceGroup().location]",
+            "apiVersion": "2014-04-01-preview",
+            "dependsOn": [ ],
+            "tags": {
+              "displayName": "manualsqldb"
+            },
+            "properties": {
+              "administratorLogin": "[parameters('manualsqldbAdminLogin')]",
+              "administratorLoginPassword": "[parameters('manualsqldbAdminLoginPassword')]"
+            },
+            "resources": [
+              {
+                "name": "AllowAllWindowsAzureIps",
+                "type": "firewallrules",
+                "location": "[resourceGroup().location]",
+                "apiVersion": "2014-04-01-preview",
+                "dependsOn": [
+                  "[resourceId('Microsoft.Sql/servers', variables('manualsqldbName'))]"
+                ],
+                "properties": {
+                  "startIpAddress": "0.0.0.0",
+                  "endIpAddress": "0.0.0.0"
+                }
+              }
+            ]
+          }
     ],
     "outputs": {
         "sshCommand": {

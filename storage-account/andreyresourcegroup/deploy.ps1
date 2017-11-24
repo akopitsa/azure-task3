@@ -57,6 +57,9 @@ param(
     $virtualnetworkname = "VnetVPC",
 
     [string]
+    $vpc = "10.0.0.0/16",
+
+    [string]
     $subnetzero = "10.0.0.0/24",
 
     [string]
@@ -66,7 +69,16 @@ param(
     $vmname = "ubuntu-vps",
 
     [string]
-    $login = "mayandrey"
+    $login = "mayandrey",
+
+    [string]
+    $passwd = "#Epam2017!Z",
+
+    [string]
+    $sqlsrv = "mysqlsbcdpepam",
+
+    [string]
+    $manualsqldbAdminLogin = "sqladmincdp"
    )
 
    Write-Host "Logging in...";
@@ -80,6 +92,10 @@ param(
     "virtualnetworkname" = $virtualnetworkname;
     "vmname" = $vmname;
     "login" = $login;
+    "vpc" = $vpc;
+    "sqlsrv" = $sqlsrv;
+    "pwd" = $passwd;
+    "manualsqldbAdminLogin" = $manualsqldbAdminLogin;
 }
 <#
 .SYNOPSIS
