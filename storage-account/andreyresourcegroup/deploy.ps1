@@ -35,7 +35,7 @@ param(
    
     #[Parameter(Mandatory=$True)]
     [string]
-    $resourceGroupName = "automyresourcegroupyes",
+    $resourceGroupName = "automyresourcegroup",
    
     [string]
     $resourceGroupLocation = "westeurope",
@@ -51,7 +51,7 @@ param(
     $parametersFilePath = "parameters2.json",
 
     [string]
-    $storageAccountName = "mystorageacc",
+    $storageAccountName = "mystorageac",
 
     [string]
     $virtualnetworkname = "VnetVPC",
@@ -63,8 +63,14 @@ param(
     $subnetone = "10.0.1.0/24",
 
     [string]
-    $vmname = "ubuntu-vps"
+    $vmname = "ubuntu-vps",
+
+    [string]
+    $login = "mayandrey"
    )
+
+   Write-Host "Logging in...";
+   #Login-AzureRmAccount; 
 
    $deploymentParameter = @{
     "storageAccounts_mycdpstorageaccount_name" = $storageAccountName + ((Get-AzureRmContext).Subscription.Id).Replace('-','').substring(0, 11);
@@ -73,6 +79,7 @@ param(
     "subnetone" = $subnetone;
     "virtualnetworkname" = $virtualnetworkname;
     "vmname" = $vmname;
+    "login" = $login;
 }
 <#
 .SYNOPSIS
@@ -94,8 +101,7 @@ Function RegisterRP {
 $ErrorActionPreference = "Stop"
 
 # sign in
-Write-Host "Logging in...";
-#Login-AzureRmAccount;
+
 
 # select subscription
 Write-Host "Selecting subscription '$subscriptionId'";

@@ -37,6 +37,12 @@
             "metadata": {
                 "desription" : "VM-name"
             }
+        },
+        "login" : {
+            "type": "string",
+            "metadata": {
+                "description" : "User login"
+            }
         }
     },
     "variables": {
@@ -210,7 +216,7 @@
                 },
                 "osProfile": {
                     "computerName": "[parameters('vmname')]",
-                    "adminUsername": "ADMIN_USERNAME",
+                    "adminUsername": "[parameters('login')]",
                     "adminPassword": "!Epam2017#Z"
                 },
                 "storageProfile": {
@@ -235,5 +241,11 @@
                 }
             }
         }
-    ]
+    ],
+    "outputs": {
+        "sshCommand": {
+            "type": "string",
+            "value": "[parameters('login')]"
+          }
+    }
 }
