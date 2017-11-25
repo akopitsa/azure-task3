@@ -72,8 +72,7 @@
     },
     "variables": {
         "virtualNetworkName": "[parameters('virtualnetworkname')]",
-        "manualsqldbName": "[concat(parameters('sqlsrv'), uniqueString(resourceGroup().id))]",
-        "variablesnsg" : "networkSecurityGroupName"   
+        "manualsqldbName": "[concat(parameters('sqlsrv'), uniqueString(resourceGroup().id))]"   
     },
     "resources": [
         {
@@ -129,10 +128,7 @@
                     {
                         "name": "Subnet-1",
                         "properties": {
-                            "addressPrefix": "[parameters('subnetzero')]",
-                            "networkSecurityGroup": {
-                            "id": "[resourceId('Microsoft.Network/networkSecurityGroups/', variables('variablesnsg'))]"
-                            }
+                            "addressPrefix": "[parameters('subnetzero')]"
                         }
                     },
                     {
@@ -142,15 +138,12 @@
                         }
                     }
                 ]
-            },
-            "dependsOn": [
-                "[resourceId('Microsoft.Network/networkSecurityGroups/', variables('variablesnsg'))]"
-            ]
+            }
         },
         {
             "apiVersion": "2017-06-01",
             "type": "Microsoft.Network/networkSecurityGroups",
-            "name": "[variables('variablesnsg')]",
+            "name": "networkSecurityGroupName",
             "location": "[resourceGroup().location]",
             "properties": {
                 "securityRules": [
@@ -182,7 +175,10 @@
                         }
                     }
                 ]
-            }
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/virtualNetworks/', variables('virtualNetworkName'))]"
+            ]
         },
         {
             "apiVersion": "2015-06-15",
