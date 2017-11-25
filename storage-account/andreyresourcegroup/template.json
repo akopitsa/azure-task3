@@ -68,6 +68,12 @@
           },
         "manualsqldbAdminLoginPassword": {
             "type": "securestring"
+        },
+        "netSecGrName" : {
+            "type": "string",
+            "metadata": {
+                "description" : "net sec gr name"
+            }
         }
     },
     "variables": {
@@ -128,7 +134,10 @@
                     {
                         "name": "Subnet-1",
                         "properties": {
-                            "addressPrefix": "[parameters('subnetzero')]"
+                            "addressPrefix": "[parameters('subnetzero')]",
+                            "networkSecurityGroup": {
+                                "id": "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('netSecGrName'))]"
+                                }
                         }
                     },
                     {
@@ -138,17 +147,20 @@
                         }
                     }
                 ]
-            }
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('netSecGrName'))]"
+            ]
         },
         {
             "apiVersion": "2017-06-01",
             "type": "Microsoft.Network/networkSecurityGroups",
-            "name": "networkSecurityGroupName",
+            "name": "[parameters('netSecGrName')]",
             "location": "[resourceGroup().location]",
             "properties": {
                 "securityRules": [
                     {
-                        "name": "all-from-epam-one",
+                        "name": "all_from_epam_one",
                         "properties": {
                             "description": "all-from-epam",
                             "protocol": "*",
@@ -161,7 +173,7 @@
                             "direction": "Inbound"
                         }
                     },                    {
-                        "name": "all-from-epam-two",
+                        "name": "all_from_epam_two",
                         "properties": {
                             "description": "all-from-epam",
                             "protocol": "*",
@@ -175,10 +187,7 @@
                         }
                     }
                 ]
-            },
-            "dependsOn": [
-                "[resourceId('Microsoft.Network/virtualNetworks/', variables('virtualNetworkName'))]"
-            ]
+            }
         },
         {
             "apiVersion": "2015-06-15",

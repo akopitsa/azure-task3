@@ -78,7 +78,10 @@ param(
     $sqlsrv = "mysqlsbcdpepam",
 
     [string]
-    $manualsqldbAdminLogin = "sqladmincdp"
+    $manualsqldbAdminLogin = "sqladmincdp",
+
+    [string]
+    $netSecGrName = "netSecurityGroupName"
    )
 
    Write-Host "Logging in...";
@@ -96,6 +99,7 @@ param(
     "sqlsrv" = $sqlsrv;
     "pwd" = $passwd;
     "manualsqldbAdminLogin" = $manualsqldbAdminLogin;
+    "netSecGrName" = $netSecGrName;
 }
 <#
 .SYNOPSIS
