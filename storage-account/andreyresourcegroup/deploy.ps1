@@ -35,7 +35,7 @@ param(
    
     #[Parameter(Mandatory=$True)]
     [string]
-    $resourceGroupName = "automyresourcegroup",
+    $resourceGroupName = "automyresourcegroupyes",
    
     [string]
     $resourceGroupLocation = "westeurope",
@@ -51,13 +51,10 @@ param(
     $parametersFilePath = "parameters2.json",
 
     [string]
-    $storageAccountName = "mystorageac",
+    $storageAccountName = "mystorageacc",
 
     [string]
     $virtualnetworkname = "VnetVPC",
-
-    [string]
-    $vpc = "10.0.0.0/16",
 
     [string]
     $subnetzero = "10.0.0.0/24",
@@ -66,23 +63,8 @@ param(
     $subnetone = "10.0.1.0/24",
 
     [string]
-    $vmname = "ubuntu-vps",
-
-    [string]
-    $login = "mayandrey",
-
-    [string]
-    $passwd = "#Epam2017!Z",
-
-    [string]
-    $sqlsrv = "mysqlsbcdpepam",
-
-    [string]
-    $manualsqldbAdminLogin = "sqladmincdp"
+    $vmname = "ubuntu-vps"
    )
-
-   Write-Host "Logging in....";
-   #Login-AzureRmAccount; 
 
    $deploymentParameter = @{
     "storageAccounts_mycdpstorageaccount_name" = $storageAccountName + ((Get-AzureRmContext).Subscription.Id).Replace('-','').substring(0, 11);
@@ -91,11 +73,6 @@ param(
     "subnetone" = $subnetone;
     "virtualnetworkname" = $virtualnetworkname;
     "vmname" = $vmname;
-    "login" = $login;
-    "vpc" = $vpc;
-    "sqlsrv" = $sqlsrv;
-    "pwd" = $passwd;
-    "manualsqldbAdminLogin" = $manualsqldbAdminLogin;
 }
 <#
 .SYNOPSIS
@@ -117,7 +94,8 @@ Function RegisterRP {
 $ErrorActionPreference = "Stop"
 
 # sign in
-
+Write-Host "Logging in...";
+#Login-AzureRmAccount;
 
 # select subscription
 Write-Host "Selecting subscription '$subscriptionId'";
