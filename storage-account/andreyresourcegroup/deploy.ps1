@@ -81,7 +81,7 @@ param(
     $manualsqldbAdminLogin = "sqladmincdp"
    )
 
-   Write-Host "Logging in...";
+   Write-Host "Logging in....";
    #Login-AzureRmAccount; 
 
    $deploymentParameter = @{
