@@ -85,7 +85,7 @@ param(
    )
 
    Write-Host "Logging in...";
-   #Login-AzureRmAccount; 
+   Login-AzureRmAccount; 
 
    $deploymentParameter = @{
     "storageAccounts_mycdpstorageaccount_name" = $storageAccountName + ((Get-AzureRmContext).Subscription.Id).Replace('-','').substring(0, 11);
