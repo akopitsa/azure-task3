@@ -74,11 +74,14 @@
             "metadata": {
                 "description" : "net sec gr name"
             }
+        },
+        "sqldbname" : {
+            "type": "string"
         }
     },
     "variables": {
         "virtualNetworkName": "[parameters('virtualnetworkname')]",
-        "manualsqldbName": "[concat(parameters('sqlsrv'), uniqueString(resourceGroup().id))]"   
+        "manualsqlsrvName": "[concat(parameters('sqlsrv'), uniqueString(resourceGroup().id))]"   
     },
     "resources": [
         {
@@ -168,7 +171,7 @@
                             "destinationPortRange": "0-65535",
                             "sourceAddressPrefix": "89.162.139.0/27",
                             "destinationAddressPrefix": "*",
-                            "access": "Allow",
+                            "access": "Deny",
                             "priority": 101,
                             "direction": "Inbound"
                         }
@@ -181,7 +184,7 @@
                             "destinationPortRange": "0-65535",
                             "sourceAddressPrefix": "80.92.226.133/32",
                             "destinationAddressPrefix": "*",
-                            "access": "Allow",
+                            "access": "Deny",
                             "priority": 102,
                             "direction": "Inbound"
                         }
@@ -277,7 +280,7 @@
             }
         },
         {
-            "name": "[variables('manualsqldbName')]",
+            "name": "[variables('manualsqlsrvName')]",
             "type": "Microsoft.Sql/servers",
             "location": "[resourceGroup().location]",
             "apiVersion": "2014-04-01-preview",
@@ -296,7 +299,7 @@
                 "location": "[resourceGroup().location]",
                 "apiVersion": "2014-04-01-preview",
                 "dependsOn": [
-                  "[resourceId('Microsoft.Sql/servers', variables('manualsqldbName'))]"
+                  "[resourceId('Microsoft.Sql/servers', variables('manualsqlsrvName'))]"
                 ],
                 "properties": {
                   "startIpAddress": "0.0.0.0",
@@ -304,6 +307,24 @@
                 }
               }
             ]
+          },
+          {
+              "type": "Microsoft.Sql/servers/databases",
+              "name": "[concat(variables('manualsqlsrvName'), '/', parameters('sqldbname'))]",
+              "apiVersion": "2014-04-01",
+              "location": "[resourceGroup().location]",
+              "tags": {
+                  "displayName": "[parameters('sqldbname')]"
+              },
+              "dependsOn": [
+                  "[variables('manualsqlsrvName')]"
+              ],
+              "properties": {
+                  "collation": "SQL_Latin1_General_CP1_CI_AS",
+                  "edition": "Basic",
+                  "maxSizeBytes": "1073741824",
+                  "requestedServiceObjectiveName": "Basic"
+              }
           }
     ],
     "outputs": {
